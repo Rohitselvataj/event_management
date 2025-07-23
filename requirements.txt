@@ -1,0 +1,9 @@
+Django>=4.2
+djangorestframework
+djangorestframework-simplejwt
+pymongo
+dnspython
+bcrypt
+Pillow
+python-dotenv
+django-cors-headers

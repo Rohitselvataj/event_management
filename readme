@@ -1,0 +1,55 @@
+# 🎯 Event Management System (Django + React)
+
+A full-stack web app for managing and discovering events. Admins can create events, and users can browse, register, and filter them based on type, location, and date.
+
+---
+
+## 🚀 Features
+
+- 🔐 JWT-based authentication
+- 🎨 Tailwind-styled UI
+- 🗂 MongoDB for users, PostgreSQL for events
+- 🧠 Auto-generated event descriptions using AI
+- 📅 User dashboard to manage your events
+
+---
+
+## 🧱 Tech Stack
+
+| Layer      | Technology             |
+|------------|------------------------|
+| Frontend   | React (Vite), Tailwind CSS |
+| Backend    | Django REST Framework  |
+| Database   | MongoDB, PostgreSQL    |
+| Auth       | JWT, bcrypt            |
+| Image      | Pillow (for media)     |
+
+---
+
+## 🛠️ Setup Guide
+
+### 1. Clone Repository
+
+```bash
+git clone https://github.com/your-username/event_manager.git
+cd event_manager
+
+
+cd backend
+python -m venv env
+source env/bin/activate  # Windows: env\Scripts\activate
+pip install -r ../docs/requirements.txt
+python manage.py migrate
+python manage.py runserver
+
+
+
+cd ../frontend
+npm install
+npm run dev
+
+
+SECRET_KEY=your_secret
+DEBUG=True
+MONGO_URL=mongodb://localhost:27017/
+DB_NAME=event_manager
