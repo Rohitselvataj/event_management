@@ -34,4 +34,4 @@ from .models import Event
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
-        fields = ['id', 'title', 'venue', 'start_date', 'end_date', 'image']
+        fields = "__all__" 
