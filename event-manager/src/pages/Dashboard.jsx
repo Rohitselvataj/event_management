@@ -10,24 +10,24 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const res = await axios.get("/my-events/");
+        const res = await axios.get("/api/my-events/");
         if (res.data.events.length === 0) {
           setError("No events found.");
         } else {
           setEvents(res.data.events);
         }
       } catch (err) {
-        localStorage.removeItem("token");
-        navigate("/login");
+        console.error("Error fetching events:", err);
+        setError("Failed to load events.");
       }
     };
+
     fetchEvents();
   }, []);
 
   return (
     <div className="max-w-5xl mx-auto mt-10">
       <h1 className="text-3xl font-bold mb-6">My Events</h1>
-
       {error ? (
         <p className="text-gray-600 text-lg">{error}</p>
       ) : (

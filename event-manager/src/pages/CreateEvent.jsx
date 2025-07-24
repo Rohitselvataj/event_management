@@ -41,7 +41,7 @@ const CreateEvent = () => {
   const generateDescription = async () => {
     setGenStatus("Generating...");
     try {
-      const res = await axios.post("/gen-description/", {
+      const res = await axios.post("/api/gen-description/", {
         title: form.title,
         venue: form.venue,
       });
@@ -64,11 +64,11 @@ const CreateEvent = () => {
     });
 
     try {
-      await axios.post("/create-event/", data, {
+      await axios.post("/api/create-event/", data, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       alert("Event created successfully!");
-      navigate("/dashboard"); // ✅ Navigate to dashboard after success
+      navigate("/"); // ✅ Navigate to dashboard after success
     } catch (err) {
       alert("Error creating event.");
     }

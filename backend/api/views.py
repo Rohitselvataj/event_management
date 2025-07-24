@@ -116,22 +116,33 @@ class RegisterView(generics.CreateAPIView):
 
 
 class GenerateDescription(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
+
 
     def post(self, request):
         title = request.data.get("title")
         venue = request.data.get("venue")
         prompt = f"Write a short engaging event description for an event titled '{title}' at '{venue}'"
-        model = genai.GenerativeModel("gemini-1.5-flash")
-        response = model.generate_content(prompt)
-        return Response({"description": response.text})
+        
+        try:
+            model = genai.GenerativeModel("gemini-1.5-flash")
+            response = model.generate_content(prompt)
+            return Response({"description": response.text})
+        except Exception as e:
+            print("Gemini error:", e)
+            return Response({"error": "AI generation failed"}, status=500)
+
 
 class CreateEvent(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     parser_classes = [MultiPartParser]
 
     def post(self, request):
-        user_email = request.user.email
+        user_email = None
+        if request.user and request.user.is_authenticated:
+            user_email = request.user.email
+        else:
+            user_email = "anonymous@example.com"
         title = request.data.get("title")
         venue = request.data.get("venue")
         start_date = request.data.get("start_date")
@@ -166,11 +177,14 @@ class CreateEvent(APIView):
 
 
 class EventListView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get(self, request):
-        user_email = request.user.email
-        docs = list(event_col.find({"user_email": user_email}))
+        if request.user.is_authenticated:
+            user_email = request.user.email
+            docs = list(event_col.find({"user_email": user_email}))
+        else:
+            docs = list(event_col.find({}))  # return all events
 
         for d in docs:
             d["id"] = str(d["_id"])

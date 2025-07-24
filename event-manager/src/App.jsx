@@ -12,7 +12,7 @@ function App() {
       <Route path="/" element={<Landing />} />
       <Route path="/admin-auth" element={<AdminAuth />} />
       <Route path="/user-auth" element={<UserAuth />} />
-      <Route path="/user" element={<UserAuth />} />
+      <Route path="/login" element={<UserAuth />} /> {/* ✅ Add this */}
       <Route path="/create-event" element={<CreateEvent />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/home" element={<Home />} />
