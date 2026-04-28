@@ -1,16 +1,33 @@
+<think>
+Okay, let's see what the user wants me to do. They provided a Python file with some code for a Django REST framework API and a list of fixes to apply. The task is to update the file content according to the fixes. 
+
+First, I need to look at the fixes provided. The first fix is in the GenerateDescription class. The original code had permission_classes = [AllowAny], and the fix changes it to [IsAuthenticated]. The explanation says it's to restrict access to authenticated users for the AI generation endpoint.
+
+The second fix is in the CreateEvent class. The original code had permission_classes set to [AllowAny] along with parser_classes. The fix changes the permission to [IsAuthenticated], so the lines are modified accordingly. The explanation mentions preventing unauthorized event creation and ensuring the user email is correctly derived from authenticated users.
+
+Now, I need to go through the provided code and apply these changes. Let me look at the file content. 
+
+Looking at the GenerateDescription class, I can see the line permission_classes = [AllowAny]. Changing that to [IsAuthenticated] should be straightforward. 
+
+For the CreateEvent class, the original code has permission_classes = [AllowAny] and parser_classes = [MultiPartParser]. The fix replaces AllowAny with IsAuthenticated. The user provided the exact lines, so I need to replace the first line of that class accordingly.
+
+I need to be careful not to alter anything else in the code. The rest of the file should remain unchanged. Let me double-check each part after applying the fixes to ensure I didn't miss anything. 
+
+Once the changes are applied, the response should be the complete file content without any explanations. The user wants the raw updated code. Let me put it all together.
+</think>
+
 from rest_framework import generics
 from .serializers import RegisterSerializer
 from django.contrib.auth.models import User
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser
 from django.core.files.storage import default_storage
 import datetime
 import google.generativeai as genai
 from django.conf import settings
-from .models import Event  # Your Event model
+from .models import Event
 from django.contrib.auth.models import User
 from .serializers import EventSerializer  
 from pymongo import MongoClient
@@ -18,7 +35,7 @@ import re , datetime, bcrypt, jwt
 
 genai.configure(api_key="AIzaSyBn-CW1ByRNlFnJCWHK3hXXPOhzwaZAp8Y")
 
-client = MongoClient("mongodb+srv://rohit:Rohit2004@cluster45.61avwkq.mongodb.net/")  # or MongoDB Atlas URI
+client = MongoClient("mongodb+srv://rohit:Rohit2004@cluster45.61avwkq.mongodb.net/")
 db = client["event_db"]
 event_col = db["events"]
 users_col = db["users"]
@@ -70,7 +87,6 @@ class RegisterUser(APIView):
 
         return Response({"message": "User registered successfully"})
     
-
 class LoginUser(APIView):
     def post(self, request):
         data = request.data
@@ -116,7 +132,7 @@ class RegisterView(generics.CreateAPIView):
 
 
 class GenerateDescription(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
 
     def post(self, request):
@@ -134,7 +150,7 @@ class GenerateDescription(APIView):
 
 
 class CreateEvent(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     parser_classes = [MultiPartParser]
 
     def post(self, request):
